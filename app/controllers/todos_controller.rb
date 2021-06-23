@@ -7,7 +7,7 @@ class TodosController < ApplicationController
   end
 
   def index
-    @todos = current_user.todos.order(priority: :desc)
+    @todos = current_user.todos.order(priority: :asc)
   end
 
   def show
@@ -33,13 +33,21 @@ class TodosController < ApplicationController
   end
 
   def prioritize
-    @todo.priority += 1
+    priority = @todo.priority
+    @todo.priority = Todo.where(priority: priority - 1).first.priority
+    next_todo = Todo.where(priority: priority - 1).first
+    next_todo.priority += 1
+    next_todo.save
     @todo.save
     redirect_to todos_path
   end
 
   def unprioritize
-    @todo.priority -= 1
+    priority = @todo.priority
+    @todo.priority = Todo.where(priority: priority + 1).first.priority
+    next_todo = Todo.where(priority: priority + 1).first
+    next_todo.priority -= 1
+    next_todo.save
     @todo.save
     redirect_to todos_path
   end
