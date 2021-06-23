@@ -4,5 +4,9 @@
       <li><p><%= todo.status %> - <%= todo.title %></p></li>
     <% end %>
     <%= link_to "do/undo", check_todo_path(todo), method: :patch	%>
+    <br>
+    <%= link_to "prioritize", prioritize_todo_path(todo), method: :patch %>
+    <br>
+    <%= link_to "unprioritize", unprioritize_todo_path(todo), method: :patch %>
   </ul>
 <% end %>

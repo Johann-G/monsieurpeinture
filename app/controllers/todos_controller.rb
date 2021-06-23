@@ -1,13 +1,13 @@
 class TodosController < ApplicationController
 
-  before_action :set_todo, only: [ :check, :show ]
+  before_action :set_todo, only: [ :check, :show, :prioritize, :unprioritize ]
 
   def new
     @todo = Todo.new
   end
 
   def index
-    @todos = current_user.todos
+    @todos = current_user.todos.order(priority: :desc)
   end
 
   def show
@@ -29,6 +29,18 @@ class TodosController < ApplicationController
     else
       @todo.undo_task!
     end
+    redirect_to todos_path
+  end
+
+  def prioritize
+    @todo.priority += 1
+    @todo.save
+    redirect_to todos_path
+  end
+
+  def unprioritize
+    @todo.priority -= 1
+    @todo.save
     redirect_to todos_path
   end
 
