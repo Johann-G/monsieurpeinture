@@ -33,23 +33,27 @@ class TodosController < ApplicationController
   end
 
   def prioritize
-    priority = @todo.priority
-    @todo.priority = Todo.where(priority: priority - 1).first.priority
-    next_todo = Todo.where(priority: priority - 1).first
-    next_todo.priority += 1
-    next_todo.save
-    @todo.save
-    redirect_to todos_path
+    if @todo.priority != Todo.minimum(:priority)
+      priority = @todo.priority
+      higher_todo = Todo.where(priority: priority - 1).first
+      @todo.priority = higher_todo.priority
+      higher_todo.priority += 1
+      higher_todo.save
+      @todo.save
+      redirect_to todos_path
+    end
   end
 
   def unprioritize
-    priority = @todo.priority
-    @todo.priority = Todo.where(priority: priority + 1).first.priority
-    next_todo = Todo.where(priority: priority + 1).first
-    next_todo.priority -= 1
-    next_todo.save
-    @todo.save
-    redirect_to todos_path
+    if @todo.priority != Todo.maximum(:priority)
+      priority = @todo.priority
+      lower_todo = Todo.where(priority: priority + 1).first
+      @todo.priority = lower_todo.priority
+      lower_todo.priority -= 1
+      lower_todo.save
+      @todo.save
+      redirect_to todos_path
+    end
   end
 
   private
