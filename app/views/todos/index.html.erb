@@ -1,12 +1,24 @@
 <% @todos.each do |todo| %>
   <ul>
-    <%= link_to todo_path(todo) do %>
-      <li><p><%= todo.status %> - <%= todo.title %></p></li>
+    <% if todo.not_done?  %>
+      <%= link_to check_todo_path(todo), method: :patch do %>
+        <i class="far fa-square"></i>
+      <% end %>
+    <% else %>
+      <%= link_to check_todo_path(todo), method: :patch do %>
+        <i class="fas fa-check"></i>
+      <% end %>
     <% end %>
-    <%= link_to "do/undo", check_todo_path(todo), method: :patch	%>
-    <br>
-    <%= link_to "prioritize", prioritize_todo_path(todo), method: :patch %>
-    <br>
-    <%= link_to "unprioritize", unprioritize_todo_path(todo), method: :patch %>
+    <%= link_to todo_path(todo) do %>
+      <%= todo.title %>
+    <% end %>
+    <%#= link_to "do/undo", check_todo_path(todo), method: :patch	%>
+    <%= link_to prioritize_todo_path(todo), method: :patch do %>
+      <i class="fas fa-arrow-up"></i>
+    <% end %>
+    <%= link_to unprioritize_todo_path(todo), method: :patch do %>
+      <i class="fas fa-arrow-down"></i>
+    <% end %>
   </ul>
 <% end %>
+<%= link_to "Add ToDo", new_todo_path %>
