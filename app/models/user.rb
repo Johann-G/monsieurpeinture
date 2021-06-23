@@ -5,4 +5,10 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :todos
+
+  private
+
+  def password_required?
+    return false
+  end
 end
