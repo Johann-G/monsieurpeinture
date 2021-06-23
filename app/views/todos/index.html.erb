@@ -1,5 +1,8 @@
 <% @todos.each do |todo| %>
   <ul>
-    <li><%= todo.title %></li>
+    <%= link_to todo_path(todo) do %>
+      <li><p><%= todo.status %> - <%= todo.title %></p></li>
+    <% end %>
+    <%= link_to "do/undo", check_todo_path(todo), method: :patch	%>
   </ul>
 <% end %>
